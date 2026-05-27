@@ -74,4 +74,11 @@ dependencies {
 
     // timber
     implementation(libs.timber)
+
+    // retrofit
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.okhttp.core)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp.logging)
 }
