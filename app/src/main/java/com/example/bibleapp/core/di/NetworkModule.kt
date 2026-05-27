@@ -1,6 +1,7 @@
 package com.example.bibleapp.core.di
 
 import com.example.bibleapp.BuildConfig
+import com.example.bibleapp.feature.bible.data.remote.BibleApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,5 +45,13 @@ object NetworkModule {
         }
     }
 
-
+    @Provides
+    @Singleton
+    fun provideBibleApi(
+        retrofit: Retrofit
+    ): BibleApi {
+        return retrofit.create(
+            BibleApi::class.java
+        )
+    }
 }
