@@ -1,4 +1,4 @@
-package com.example.bibleapp.ui.theme
+package com.example.bibleapp.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
