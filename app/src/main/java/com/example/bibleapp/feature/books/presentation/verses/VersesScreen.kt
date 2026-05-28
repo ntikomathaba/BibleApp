@@ -3,7 +3,10 @@ package com.example.bibleapp.feature.books.presentation.verses
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bibleapp.feature.books.domain.model.Verse
@@ -47,12 +51,20 @@ fun VersesScreen(
                 title = title,
                 onBackPress = onBackPress
             )
-        }
+        },
+        modifier = modifier
     ) { innerPadding ->
+        val contentPadding = PaddingValues(
+            start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
+            top = innerPadding.calculateTopPadding(),
+            end = innerPadding.calculateEndPadding(LayoutDirection.Rtl),
+            bottom = innerPadding.calculateBottomPadding()
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(contentPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

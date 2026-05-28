@@ -4,7 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.bibleapp.feature.books.domain.model.Chapter
 import com.example.bibleapp.feature.books.presentation.BibleBookEvent
@@ -44,12 +48,20 @@ fun ChapterScreen(
                 title = "${bookName?.name}",
                 onBackPress = onBackPress
             )
-        }
+        },
+        modifier = modifier
     ) { innerPadding ->
+        val contentPadding = PaddingValues(
+            start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
+            top = innerPadding.calculateTopPadding(),
+            end = innerPadding.calculateEndPadding(LayoutDirection.Rtl),
+            bottom = innerPadding.calculateBottomPadding()
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(contentPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -63,6 +75,7 @@ fun ChapterScreen(
                 }
             } else {
                 ChaptersList(
+                    modifier = modifier,
                     state = state,
                     event = event,
                     onNavigate = onNavigate
