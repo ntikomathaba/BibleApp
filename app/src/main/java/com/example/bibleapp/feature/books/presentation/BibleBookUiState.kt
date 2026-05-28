@@ -6,5 +6,5 @@ data class BibleBookUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val errorMessage: String? = null,
-    val bibleBooks: Books = Books()
+    val bibleBooks: Books? = Books()
 )
