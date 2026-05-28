@@ -13,6 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.bibleapp.feature.bible.presentation.BibleScreen
 import com.example.bibleapp.feature.bible.presentation.BibleViewModel
+import com.example.bibleapp.feature.bible.presentation.bibleNavGraph
+import com.example.bibleapp.feature.books.presentation.bibleBookNavGraph
 
 @Composable
 fun RootNavigation(modifier: Modifier = Modifier) {
@@ -21,22 +23,21 @@ fun RootNavigation(modifier: Modifier = Modifier) {
         NavHost(
             navController = navController,
             modifier = modifier.padding(innerPadding),
-            startDestination = Destination.Home.route
+            startDestination = Destination.BibleBookNavGraph.route
         ) {
-            composable(Destination.Home.route){
-                val viewModel: BibleViewModel = hiltViewModel()
-                val state by viewModel.state.collectAsStateWithLifecycle()
+            bibleNavGraph(
+                navController = navController
+            )
 
-                BibleScreen(
-                    state = state,
-                    event = viewModel::onEvent
-                )
-            }
+            bibleBookNavGraph(
+                navController = navController
+            )
         }
     }
 }
 
 
 sealed class Destination(val route: String) {
-    data object Home : Destination("root_nav_graph")
+    data object BibleNavGraph : Destination("bible_nav_graph")
+    data object BibleBookNavGraph : Destination("bible_book_nav_graph")
 }
