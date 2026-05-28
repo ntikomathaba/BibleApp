@@ -1,42 +1,97 @@
 package com.example.bibleapp
 
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.bibleapp.feature.bible.presentation.BibleScreen
-import com.example.bibleapp.feature.bible.presentation.BibleViewModel
+import com.example.bibleapp.feature.bible.presentation.bibleNavGraph
+import com.example.bibleapp.feature.bookMarks.bookMarksNavGraph
+import com.example.bibleapp.feature.books.presentation.bibleBookNavGraph
+import com.example.bibleapp.feature.settings.settingsNavGraph
 
 @Composable
 fun RootNavigation(modifier: Modifier = Modifier) {
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        val navController = rememberNavController()
+    val navController = rememberNavController()
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        bottomBar = {
+            BibleBottomNavigation(
+                navController = navController,
+            )
+        }
+    ) { innerPadding ->
+        val contentPadding = PaddingValues(
+            start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
+            top = 0.dp,
+            end = innerPadding.calculateEndPadding(LayoutDirection.Ltr),
+            bottom = 32.dp
+        )
+
         NavHost(
             navController = navController,
-            modifier = modifier.padding(innerPadding),
-            startDestination = Destination.Home.route
+            modifier = modifier.padding(contentPadding),
+            startDestination = BottomNavDestination.Bible.route
         ) {
-            composable(Destination.Home.route){
-                val viewModel: BibleViewModel = hiltViewModel()
-                val state by viewModel.state.collectAsStateWithLifecycle()
+            bibleNavGraph(
+                navController = navController
+            )
 
-                BibleScreen(
-                    state = state,
-                    event = viewModel::onEvent
-                )
-            }
+            bibleBookNavGraph(
+                navController = navController,
+                modifier = modifier.padding(contentPadding)
+            )
+
+            bookMarksNavGraph(
+                navController = navController,
+                modifier = modifier.padding(contentPadding)
+            )
+
+            settingsNavGraph(
+                navController = navController,
+                modifier = modifier
+            )
+
         }
     }
 }
 
 
 sealed class Destination(val route: String) {
-    data object Home : Destination("root_nav_graph")
+    data object BibleNavGraph : Destination("bible_nav_graph")
+}
+
+sealed class BottomNavDestination(
+    val route: String,
+    val title: String,
+    val icon: ImageVector
+) {
+    data object Bible : BottomNavDestination(
+            route = "bible",
+            title = "Bible",
+            icon = Icons.AutoMirrored.Filled.MenuBook
+        )
+    data object BookMark : BottomNavDestination(
+            route = "saved",
+            title = "Saved",
+            icon = Icons.Default.Bookmark
+        )
+    data object Settings : BottomNavDestination(
+            route = "settings",
+            title = "Settings",
+            icon = Icons.Default.Settings
+        )
 }
