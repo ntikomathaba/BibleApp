@@ -1,14 +1,30 @@
 package com.example.bibleapp.feature.books.data.repo
 
-import com.example.bibleapp.feature.books.data.local.BibleBooksDataSource
+import com.example.bibleapp.core.result.BaseResult
+import com.example.bibleapp.feature.bible.data.remote.BibleApi
+import com.example.bibleapp.feature.books.data.mapper.toDomain
 import com.example.bibleapp.feature.books.domain.model.Books
 import com.example.bibleapp.feature.books.domain.repo.BibleBookRepo
 import javax.inject.Inject
 
 class BibleBookRepoImpl @Inject constructor(
-    val bibleBooksDataSource: BibleBooksDataSource,
+    private val bibleBooksApi: BibleApi
 ): BibleBookRepo {
-    override fun getBibleBooks(): Books {
-        return bibleBooksDataSource.getBibleBooksFromAsset()
+    override suspend fun getBibleBooks(): BaseResult<Books?, Error> {
+        val result = bibleBooksApi.getBooks()
+
+        if (result.isSuccessful){
+            val body = result.body()
+            return if (body != null) {
+                BaseResult.Success(result.body()?.books?.toDomain())
+            } else {
+                BaseResult.Failure(Error("API Error ${result.code()}: ${result.message()}"))
+            }
+        } else {
+            throw Exception(
+                result.errorBody()?.string()
+                    ?: "Unknown error occurred"
+            )
+        }
     }
 }
