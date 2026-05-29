@@ -11,7 +11,6 @@ import androidx.navigation.navigation
 import com.example.bibleapp.BottomNavDestination
 import com.example.bibleapp.feature.bookMarks.presentation.BookMarkScreen
 import com.example.bibleapp.feature.bookMarks.presentation.BookMarkViewModel
-import com.example.bibleapp.feature.books.presentation.BibleBooksViewModel
 
 fun NavGraphBuilder.bookMarksNavGraph(
     modifier: Modifier = Modifier,
@@ -28,6 +27,7 @@ fun NavGraphBuilder.bookMarksNavGraph(
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             BookMarkScreen(
+                modifier = modifier,
                 state = state,
                 event = viewModel::onEvent
             )
