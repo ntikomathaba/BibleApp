@@ -1,7 +1,7 @@
 package com.example.bibleapp.feature.books.data.repo
 
 import com.example.bibleapp.core.result.BaseResult
-import com.example.bibleapp.feature.bible.data.remote.BibleApi
+import com.example.bibleapp.feature.bible_search.data.remote.BibleApi
 import com.example.bibleapp.feature.books.data.mapper.toDomain
 import com.example.bibleapp.feature.books.domain.model.Books
 import com.example.bibleapp.feature.books.domain.model.Chapters

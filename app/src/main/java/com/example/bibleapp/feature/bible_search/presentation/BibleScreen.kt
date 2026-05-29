@@ -1,4 +1,4 @@
-package com.example.bibleapp.feature.bible.presentation
+package com.example.bibleapp.feature.bible_search.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
