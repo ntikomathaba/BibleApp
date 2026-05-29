@@ -4,5 +4,6 @@ import javax.inject.Inject
 
 data class FavouriteVerseUseCases @Inject constructor(
     val favVerseUse: FavVerseUseCase,
+    val unFavVerseUseCase: UnFavVerseUseCase,
     val fetchFavouriteVersesUseCase: FetchFavouriteVersesUseCase
 )
