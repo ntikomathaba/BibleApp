@@ -3,9 +3,8 @@ package com.example.bibleapp.feature.books.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bibleapp.core.result.BaseResult
-import com.example.bibleapp.feature.books.data.local.FavouriteVerseEntity
 import com.example.bibleapp.feature.books.domain.use_case.BibleUseCases
-import com.example.bibleapp.feature.books.domain.use_case.FavouriteVerseUseCases
+import com.example.bibleapp.feature.bookMarks.domain.use_case.FavouriteVerseUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

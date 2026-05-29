@@ -1,4 +1,4 @@
-package com.example.bibleapp.feature.books.domain.use_case
+package com.example.bibleapp.feature.bookMarks.domain.use_case
 
 import com.example.bibleapp.feature.books.data.local.FavouriteVerseDao
 import com.example.bibleapp.feature.books.data.local.FavouriteVerseEntity
