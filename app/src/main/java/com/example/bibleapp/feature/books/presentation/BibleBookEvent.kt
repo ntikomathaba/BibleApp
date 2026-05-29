@@ -5,4 +5,5 @@ sealed class BibleBookEvent{
     data class OnClickBook(val bookId: String): BibleBookEvent()
     data class GetChapters(val bookId: String): BibleBookEvent()
     data class GetVerses(val bookId: String, val chapter: Int): BibleBookEvent()
+    data class FavVerse(val verse: Int): BibleBookEvent()
 }

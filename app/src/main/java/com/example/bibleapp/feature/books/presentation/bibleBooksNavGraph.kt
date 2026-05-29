@@ -181,7 +181,7 @@ fun NavGraphBuilder.bibleBookNavGraph(
                 event = viewModel::onEvent,
                 bookId = bookId,
                 chapter = chapter,
-                verse = verse,
+                verseNum = verse,
                 onBackPress = {
                     navController.navigateUp()
                 }

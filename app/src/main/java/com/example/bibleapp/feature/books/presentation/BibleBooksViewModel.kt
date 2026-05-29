@@ -3,7 +3,9 @@ package com.example.bibleapp.feature.books.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bibleapp.core.result.BaseResult
+import com.example.bibleapp.feature.books.data.local.FavouriteVerseEntity
 import com.example.bibleapp.feature.books.domain.use_case.BibleUseCases
+import com.example.bibleapp.feature.books.domain.use_case.FavouriteVerseUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BibleBooksViewModel @Inject constructor(
-    private val bibleUseCases: BibleUseCases
+    private val bibleUseCases: BibleUseCases,
+    private val favouriteVerseUseCases: FavouriteVerseUseCases
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(BibleBookUiState())
@@ -30,7 +33,16 @@ class BibleBooksViewModel @Inject constructor(
             is BibleBookEvent.OnClickBook -> onClickBook(event.bookId)
             is BibleBookEvent.GetChapters -> getChapters(event.bookId)
             is BibleBookEvent.GetVerses -> getVerses(event.bookId, event.chapter)
+            is BibleBookEvent.FavVerse -> favVerse(event.verse)
         }
+    }
+
+    private fun favVerse(verseNum: Int) = viewModelScope.launch {
+        val foundVerse = _uiState.value.verses?.verses?.find { it.verse == verseNum }
+        Timber.e("SavingVerse $foundVerse")
+
+        favouriteVerseUseCases
+            .favVerseUse(foundVerse)
     }
 
     private fun getVerses(bookId: String, chapter: Int) = viewModelScope.launch {
