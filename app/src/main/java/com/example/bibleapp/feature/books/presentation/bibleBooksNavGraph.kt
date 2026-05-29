@@ -182,7 +182,6 @@ fun NavGraphBuilder.bibleBookNavGraph(
                 bookId = bookId,
                 chapter = chapter,
                 verse = verse,
-                backStackEntry = backStackEntry,
                 onBackPress = {
                     navController.navigateUp()
                 }
