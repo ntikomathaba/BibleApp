@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bibleapp.feature.bookMarks.domain.mapper.toDomain
 import com.example.bibleapp.feature.bookMarks.domain.use_case.FavouriteVerseUseCases
-import com.example.bibleapp.feature.books.data.mapper.toDomain
+import com.example.bibleapp.feature.books.domain.model.Verse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,22 +15,22 @@ import javax.inject.Inject
 @HiltViewModel
 class BookMarkViewModel @Inject constructor(
     private val favouriteVerseUseCases: FavouriteVerseUseCases
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(BookMarkUiState())
     val state = _uiState.asStateFlow()
 
     init {
-        fetchVerses()
+        observeVerses()
     }
 
-    fun onEvent(event: BookMarkEvent){
-//        when(event){
-//
-//        }
+    fun onEvent(event: BookMarkEvent) {
+        when (event) {
+            is BookMarkEvent.OnDeleteBookMark -> removeBookMark(event.bookMark)
+        }
     }
 
-    private fun fetchVerses() = viewModelScope.launch {
+    private fun observeVerses() = viewModelScope.launch {
         favouriteVerseUseCases
             .fetchFavouriteVersesUseCase()
             .collect { verses ->
@@ -40,5 +40,12 @@ class BookMarkViewModel @Inject constructor(
                     )
                 }
             }
+    }
+
+    private fun removeBookMark(bookMark: Verse) = viewModelScope.launch {
+        favouriteVerseUseCases
+            .unFavVerseUseCase(bookMark)
+
+
     }
 }
