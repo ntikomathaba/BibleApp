@@ -14,7 +14,8 @@ import androidx.navigation.navigation
 import com.example.bibleapp.BottomNavDestination
 import com.example.bibleapp.feature.books.presentation.books.BibleBookScreen
 import com.example.bibleapp.feature.books.presentation.chapters.ChapterScreen
-import com.example.bibleapp.feature.books.presentation.verses.VersesScreen
+import com.example.bibleapp.feature.books.presentation.verses.VerseReaderScreen
+import com.example.bibleapp.feature.books.presentation.verses.VerseSelectorScreen
 
 fun NavGraphBuilder.bibleBookNavGraph(
     modifier: Modifier = Modifier,
@@ -33,9 +34,10 @@ fun NavGraphBuilder.bibleBookNavGraph(
                 state = state,
                 event = viewModel::onEvent,
                 onNavigate = { bookId ->
+                    // user selects book
                     navController.navigate(
-                        BibleBookDestination
-                            .BibleBookScreen
+                        route = BibleBookDestination
+                            .ChapterListScreen
                             .createRoute(bookId)
                     )
                 }
@@ -43,7 +45,7 @@ fun NavGraphBuilder.bibleBookNavGraph(
         }
 
         composable(
-            route = BibleBookDestination.BibleBookScreen.route,
+            route = BibleBookDestination.ChapterListScreen.route,
             arguments = listOf(
                 navArgument("bookId") {
                     type = NavType.StringType
@@ -67,9 +69,10 @@ fun NavGraphBuilder.bibleBookNavGraph(
                 state = state,
                 event = viewModel::onEvent,
                 onNavigate = { chapter ->
+                    // user selects chapter
                     navController.navigate(
-                        BibleBookDestination
-                            .BibleVersesScreen
+                        route = BibleBookDestination
+                            .VerseListScreen
                             .createRoute(
                                 bookId = bookId,
                                 chapter = chapter
@@ -83,7 +86,7 @@ fun NavGraphBuilder.bibleBookNavGraph(
         }
 
         composable(
-            route = BibleBookDestination.BibleVersesScreen.route,
+            route = BibleBookDestination.VerseListScreen.route,
             arguments = listOf(
                 navArgument("bookId") {
                     type = NavType.StringType
@@ -92,7 +95,7 @@ fun NavGraphBuilder.bibleBookNavGraph(
                     type = NavType.IntType
                 }
             )
-        ){ backStackEntry ->
+        ) { backStackEntry ->
             val bookId = backStackEntry
                 .arguments
                 ?.getString("bookId")
@@ -118,33 +121,93 @@ fun NavGraphBuilder.bibleBookNavGraph(
                 )
             }
 
-            VersesScreen(
+            VerseSelectorScreen(
                 state = state,
                 event = viewModel::onEvent,
                 onBackPress = {
                     navController.navigateUp()
                 },
-                onNavigate = {
-
+                onNavigate = { verse ->
+                    // user selects verse
+                    navController
+                        .navigate(
+                            route = BibleBookDestination
+                                .VerseScreen
+                                .createRoute(
+                                    bookId = bookId,
+                                    chapter = chapter,
+                                    verse = verse
+                                )
+                        )
                 },
                 modifier = modifier
             )
+        }
 
+        composable(
+            route = BibleBookDestination.VerseScreen.route,
+            arguments = listOf(
+                navArgument("bookId") {
+                    type = NavType.StringType
+                },
+                navArgument("chapter") {
+                    type = NavType.IntType
+                },
+                navArgument("verse") {
+                    type = NavType.IntType
+                }
+            )
+        ) { backStackEntry ->
+            val bookId = backStackEntry
+                .arguments
+                ?.getString("bookId")
+                ?: ""
+
+            val chapter = backStackEntry
+                .arguments
+                ?.getInt("chapter")
+                ?: 0
+
+            val verse = backStackEntry
+                .arguments
+                ?.getInt("verse")
+                ?: 0
+
+            val viewModel: BibleBooksViewModel = hiltViewModel()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            VerseReaderScreen(
+                state = state,
+                event = viewModel::onEvent,
+                bookId = bookId,
+                chapter = chapter,
+                verse = verse,
+                backStackEntry = backStackEntry,
+                onBackPress = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }
 
 sealed class BibleBookDestination(val route: String) {
     data object BibleBookListScreen : BibleBookDestination("bible_book_list_screen")
-    data object BibleBookScreen : BibleBookDestination(route = "bible_book/{bookId}") {
+    data object ChapterListScreen : BibleBookDestination("chapter_list/{bookId}") {
         fun createRoute(bookId: String): String {
-            return "bible_book/$bookId"
+            return "chapter_list/$bookId"
         }
     }
 
-    data object BibleVersesScreen : BibleBookDestination("bible_verses/{bookId}/{chapter}") {
+    data object VerseListScreen : BibleBookDestination("verse_list/{bookId}/{chapter}") {
         fun createRoute(bookId: String, chapter: Int): String {
-            return "bible_verses/$bookId/$chapter"
+            return "verse_list/$bookId/$chapter"
+        }
+    }
+
+    data object VerseScreen : BibleBookDestination("verse_screen/{bookId}/{chapter}/{verse}") {
+        fun createRoute(bookId: String, chapter: Int, verse: Int): String {
+            return "verse_screen/$bookId/$chapter/$verse"
         }
     }
 }
