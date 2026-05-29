@@ -1,7 +1,7 @@
 package com.example.bibleapp.core.di
 
 import com.example.bibleapp.BuildConfig
-import com.example.bibleapp.feature.bible.data.remote.BibleApi
+import com.example.bibleapp.feature.bible_search.data.remote.BibleApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

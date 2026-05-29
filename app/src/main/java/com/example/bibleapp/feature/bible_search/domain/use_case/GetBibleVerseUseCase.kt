@@ -1,7 +1,7 @@
-package com.example.bibleapp.feature.bible.domain.use_case
+package com.example.bibleapp.feature.bible_search.domain.use_case
 
 import com.example.bibleapp.core.result.BaseResult
-import com.example.bibleapp.feature.bible.domain.repo.BibleRepo
+import com.example.bibleapp.feature.bible_search.domain.repo.BibleRepo
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber

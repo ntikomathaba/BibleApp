@@ -1,4 +1,4 @@
-package com.example.bibleapp.feature.bible.data.remote.dto
+package com.example.bibleapp.feature.bible_search.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,9 +1,9 @@
-package com.example.bibleapp.feature.bible.presentation
+package com.example.bibleapp.feature.bible_search.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bibleapp.core.result.BaseResult
-import com.example.bibleapp.feature.bible.domain.use_case.GetBibleVerseUseCase
+import com.example.bibleapp.feature.bible_search.domain.use_case.GetBibleVerseUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

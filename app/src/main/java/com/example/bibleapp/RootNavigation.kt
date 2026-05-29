@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.example.bibleapp.feature.bible.presentation.bibleNavGraph
+import com.example.bibleapp.feature.bible_search.presentation.bibleNavGraph
 import com.example.bibleapp.feature.bookMarks.bookMarksNavGraph
 import com.example.bibleapp.feature.books.presentation.bibleBookNavGraph
 import com.example.bibleapp.feature.settings.settingsNavGraph

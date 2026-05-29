@@ -1,6 +1,6 @@
-package com.example.bibleapp.feature.bible.data.remote
+package com.example.bibleapp.feature.bible_search.data.remote
 
-import com.example.bibleapp.feature.bible.data.remote.dto.BibleVerseResponseDto
+import com.example.bibleapp.feature.bible_search.data.remote.dto.BibleVerseResponseDto
 import com.example.bibleapp.feature.books.data.remote.dto.BibleBooksResponseDto
 import com.example.bibleapp.feature.books.data.remote.dto.BookChaptersResponseDto
 import com.example.bibleapp.feature.books.data.remote.dto.VersesResponseDto

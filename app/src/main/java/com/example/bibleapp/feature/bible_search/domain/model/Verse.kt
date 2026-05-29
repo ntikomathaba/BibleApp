@@ -1,4 +1,4 @@
-package com.example.bibleapp.feature.bible.domain.model
+package com.example.bibleapp.feature.bible_search.domain.model
 
 data class Verse(
     val bookName: String = "",

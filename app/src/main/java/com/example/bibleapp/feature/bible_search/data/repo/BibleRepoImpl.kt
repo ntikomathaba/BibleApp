@@ -1,10 +1,10 @@
-package com.example.bibleapp.feature.bible.data.repo
+package com.example.bibleapp.feature.bible_search.data.repo
 
 import com.example.bibleapp.core.result.BaseResult
-import com.example.bibleapp.feature.bible.data.mapper.toDomain
-import com.example.bibleapp.feature.bible.data.remote.BibleApi
-import com.example.bibleapp.feature.bible.domain.repo.BibleRepo
-import com.example.bibleapp.feature.bible.domain.model.BibleVerse
+import com.example.bibleapp.feature.bible_search.data.mapper.toDomain
+import com.example.bibleapp.feature.bible_search.data.remote.BibleApi
+import com.example.bibleapp.feature.bible_search.domain.repo.BibleRepo
+import com.example.bibleapp.feature.bible_search.domain.model.BibleVerse
 import javax.inject.Inject
 
 class BibleRepoImpl @Inject constructor(

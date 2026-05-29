@@ -1,4 +1,4 @@
-package com.example.bibleapp.feature.bible.presentation
+package com.example.bibleapp.feature.bible_search.presentation
 
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel

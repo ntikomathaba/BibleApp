@@ -1,6 +1,6 @@
-package com.example.bibleapp.feature.bible.presentation
+package com.example.bibleapp.feature.bible_search.presentation
 
-import com.example.bibleapp.feature.bible.domain.model.BibleVerse
+import com.example.bibleapp.feature.bible_search.domain.model.BibleVerse
 
 data class BibleUiState(
     val isLoading: Boolean = false,

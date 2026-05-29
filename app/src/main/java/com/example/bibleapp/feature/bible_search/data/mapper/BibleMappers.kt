@@ -1,9 +1,9 @@
-package com.example.bibleapp.feature.bible.data.mapper
+package com.example.bibleapp.feature.bible_search.data.mapper
 
-import com.example.bibleapp.feature.bible.data.remote.dto.BibleVerseResponseDto
-import com.example.bibleapp.feature.bible.data.remote.dto.VerseDto
-import com.example.bibleapp.feature.bible.domain.model.BibleVerse
-import com.example.bibleapp.feature.bible.domain.model.Verse
+import com.example.bibleapp.feature.bible_search.data.remote.dto.BibleVerseResponseDto
+import com.example.bibleapp.feature.bible_search.data.remote.dto.VerseDto
+import com.example.bibleapp.feature.bible_search.domain.model.BibleVerse
+import com.example.bibleapp.feature.bible_search.domain.model.Verse
 
 fun BibleVerseResponseDto.toDomain(): BibleVerse {
     return BibleVerse(
