@@ -3,4 +3,5 @@
     <string name="bible_books">Bible Books</string>
     <string name="chapter">Chapters</string>
     <string name="verses">Verses</string>
+    <string name="book_marks">Bookmarks</string>
 </resources>

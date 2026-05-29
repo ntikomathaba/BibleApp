@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.example.bibleapp.feature.books.domain.model.Verse
 import com.example.bibleapp.feature.books.presentation.BibleBookEvent
 import com.example.bibleapp.feature.books.presentation.BibleBookUiState
-import com.example.bibleapp.feature.books.presentation.components.BookChapterTopAppBar
+import com.example.bibleapp.feature.books.presentation.components.VerseReaderTopAppBar
 import kotlinx.coroutines.launch
 
 @Composable
@@ -42,11 +42,11 @@ fun VerseReaderScreen(
     event: (BibleBookEvent) -> Unit,
     bookId: String,
     chapter: Int,
-    verse: Int,
+    verseNum: Int,
     onBackPress: () -> Unit,
 ) {
 
-    val title = "$bookId $chapter:$verse"
+    val title = "$bookId $chapter:$verseNum"
 
     LaunchedEffect(
         key1 = bookId,
@@ -57,8 +57,11 @@ fun VerseReaderScreen(
 
     Scaffold(
         topBar = {
-            BookChapterTopAppBar(
+            VerseReaderTopAppBar(
                 title = title,
+                onFavVerse = {
+                    event(BibleBookEvent.FavVerse(verseNum))
+                },
                 onBackPress = onBackPress
             )
         },
@@ -82,7 +85,7 @@ fun VerseReaderScreen(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
                 event = event,
-                initialVerse = verse,
+                initialVerse = verseNum,
             )
         }
     }
