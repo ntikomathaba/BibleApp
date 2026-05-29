@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.bibleapp.Destination
 
-fun NavGraphBuilder.bibleNavGraph(
+fun NavGraphBuilder.bibleSearchNavGraph(
     navController: NavController,
 ) {
     navigation(
