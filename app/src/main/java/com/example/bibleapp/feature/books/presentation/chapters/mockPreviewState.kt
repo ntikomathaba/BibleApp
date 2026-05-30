@@ -1,7 +1,6 @@
 package com.example.bibleapp.feature.books.presentation.chapters
 
 import com.example.bibleapp.feature.books.domain.model.BibleBook
-import com.example.bibleapp.feature.books.domain.model.Books
 import com.example.bibleapp.feature.books.domain.model.Chapter
 import com.example.bibleapp.feature.books.domain.model.Chapters
 import com.example.bibleapp.feature.books.domain.model.Testament
