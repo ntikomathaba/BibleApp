@@ -33,7 +33,16 @@ class BibleBooksViewModel @Inject constructor(
             is BibleBookEvent.GetChapters -> getChapters(event.bookId)
             is BibleBookEvent.GetVerses -> getVerses(event.bookId, event.chapter)
             is BibleBookEvent.OnClickChapter -> onClickChapter(event.chapter)
+            is BibleBookEvent.OnChangeVerse -> onCurrentVerse(event.currentVerse)
             is BibleBookEvent.FavVerse -> favVerse(event.verse)
+        }
+    }
+
+    private fun onCurrentVerse(currentVerse: Int) {
+        _uiState.update { state ->
+            state.copy(
+                currentVerse = currentVerse
+            )
         }
     }
 
