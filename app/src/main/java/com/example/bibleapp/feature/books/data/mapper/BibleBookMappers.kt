@@ -7,6 +7,7 @@ import com.example.bibleapp.feature.books.domain.model.BibleBook
 import com.example.bibleapp.feature.books.domain.model.Books
 import com.example.bibleapp.feature.books.domain.model.Chapter
 import com.example.bibleapp.feature.books.domain.model.Chapters
+import com.example.bibleapp.feature.books.domain.model.Testament
 import com.example.bibleapp.feature.books.domain.model.Verse
 import com.example.bibleapp.feature.books.domain.model.Verses
 
@@ -15,8 +16,10 @@ fun List<BibleBookDto>.toDomain(): Books {
         books = this.map {
             BibleBook(
                 name = it.name,
-                url =  it.url,
-                id =  it.id)
+                url = it.url,
+                id = it.id,
+                testament = Testament.NONE
+            )
         }
     )
 }
@@ -45,5 +48,14 @@ fun List<VerseDto>.toDomain(): Verses {
                 text = it.text
             )
         }
+    )
+}
+
+fun BibleBookDto.toTestamentBook(testament: Testament): BibleBook {
+    return BibleBook(
+        id = id,
+        name = name,
+        url = url,
+        testament = testament
     )
 }

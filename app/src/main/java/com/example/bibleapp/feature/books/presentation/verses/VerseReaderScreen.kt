@@ -83,7 +83,7 @@ fun VerseReaderScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            val bookName = state.bibleBooks?.books?.find { it.id == bookId }?.name
+            val bookName = state.bibleBooks.find { it.id == bookId }?.name
 
             Text(
                 modifier = Modifier

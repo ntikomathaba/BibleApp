@@ -45,7 +45,7 @@ fun VerseSelectorScreen(
     onReadWholeVerse: () -> Unit
 ) {
     val bookId = state.currentBookId
-    val bookName = state.bibleBooks?.books?.find { it.id == bookId }
+    val bookName = state.bibleBooks.find { it.id == bookId }
 
     val chapter = state.currentChapter
     val title = "${bookName?.name}: $chapter"
@@ -106,7 +106,7 @@ fun VerseSelectorList(
 ) {
 
     val bookId = state.currentBookId
-    val bookName = state.bibleBooks?.books?.find { it.id == bookId }?.name
+    val bookName = state.bibleBooks.find { it.id == bookId }?.name
     val chapter = state.currentChapter
 
     LazyVerticalGrid(
