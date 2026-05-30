@@ -85,8 +85,8 @@ class BibleBooksViewModel @Inject constructor(
                             state.copy(
                                 isLoading = false,
                                 verses = result.data,
-                                bookId = bookId,
-                                chapter = chapter
+                                currentBookId = bookId,
+                                currentChapter = chapter
                             )
                         }
                     }
@@ -123,7 +123,7 @@ class BibleBooksViewModel @Inject constructor(
                             state.copy(
                                 isLoading = false,
                                 chapters = result.data,
-                                bookId = bookId
+                                currentBookId = bookId
                             )
                         }
                     }
@@ -135,7 +135,7 @@ class BibleBooksViewModel @Inject constructor(
         Timber.e("BookId: $bookId")
         _uiState.update { state ->
             state.copy(
-                bookId = bookId
+                currentBookId = bookId
             )
         }
     }
@@ -143,7 +143,7 @@ class BibleBooksViewModel @Inject constructor(
     private fun onClickChapter(chapter: Int) {
         _uiState.update { state ->
             state.copy(
-                chapter = chapter
+                currentChapter = chapter
             )
         }
     }

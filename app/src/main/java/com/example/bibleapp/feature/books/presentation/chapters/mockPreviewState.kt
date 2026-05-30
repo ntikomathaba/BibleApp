@@ -38,6 +38,6 @@ val mockBibleBookUiState = BibleBookUiState(
             Verse("NUM", "Numbers", 3, 3, "And it was done"),
         )
     ),
-    bookId = "GEN",
-    chapter = 1
+    currentBookId = "GEN",
+    currentChapter = 1
 )

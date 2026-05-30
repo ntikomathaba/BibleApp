@@ -41,7 +41,7 @@ fun ChapterScreen(
     onNavigate: (Int) -> Unit,
     onBackPress: () -> Unit
 ) {
-    val bookId = state.bookId
+    val bookId = state.currentBookId
     val bookName = state.bibleBooks?.books?.find { it.id == bookId }
 
 
