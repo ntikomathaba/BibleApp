@@ -2,6 +2,7 @@ package com.example.bibleapp.feature.bookMarks.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,18 +40,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.bibleapp.R
 import com.example.bibleapp.feature.bookMarks.presentation.components.BookMarksTopAppBar
 import com.example.bibleapp.feature.books.domain.model.Verse
+import timber.log.Timber
 
 @Composable
 fun BookMarkScreen(
     modifier: Modifier = Modifier,
     state: BookMarkUiState,
-    event: (BookMarkEvent) -> Unit
+    event: (BookMarkEvent) -> Unit,
+    onNavigate: (String, Int, Int) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -74,7 +78,8 @@ fun BookMarkScreen(
             BookMarksList(
                 modifier = Modifier.padding(contentPadding),
                 bookMarks = state.bookMarks,
-                event = event
+                event = event,
+                onNavigate = onNavigate
             )
         }
     }
@@ -84,49 +89,55 @@ fun BookMarkScreen(
 fun BookMarksList(
     modifier: Modifier = Modifier,
     bookMarks: List<Verse>,
-    event: (BookMarkEvent) -> Unit
+    event: (BookMarkEvent) -> Unit,
+    onNavigate: (String, Int, Int) -> Unit
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        itemsIndexed(
-            items = bookMarks,
-            key = { _, verse ->
-                "${verse.id}_${verse.chapter}_${verse.verse}"
-            }
-        ) { index, bookMark ->
-            val dismissState = rememberSwipeToDismissBoxState(
-                confirmValueChange = { value ->
-                    if (value == SwipeToDismissBoxValue.EndToStart) {
-                        event(BookMarkEvent.OnDeleteBookMark(bookMark))
+    if (bookMarks.isNotEmpty()) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            itemsIndexed(
+                items = bookMarks,
+                key = { _, verse ->
+                    "${verse.id}_${verse.chapter}_${verse.verse}"
+                }
+            ) { index, bookMark ->
+                val dismissState = rememberSwipeToDismissBoxState(
+                    confirmValueChange = { value ->
+                        if (value == SwipeToDismissBoxValue.EndToStart) {
+                            event(BookMarkEvent.OnDeleteBookMark(bookMark))
 
-                        true
-                    } else {
-                        false
-                    }
-                },
-                positionalThreshold = { it * 0.7f }
-            )
-
-            SwipeToDismissBox(
-                state = dismissState,
-                backgroundContent = { SwipeDeleteBackground(dismissState) },
-                enableDismissFromStartToEnd = false,
-                enableDismissFromEndToStart = true
-            ) {
-                BookMarkItem(
-                    modifier = Modifier.animateItem(),
-                    bookMark = bookMark,
-                    index = index,
-                    isLastItem = index == bookMarks.size - 1,
-                    onClick = {
-
-                    }
+                            true
+                        } else {
+                            false
+                        }
+                    },
+                    positionalThreshold = { it * 0.7f }
                 )
+
+                SwipeToDismissBox(
+                    state = dismissState,
+                    backgroundContent = { SwipeDeleteBackground(dismissState) },
+                    enableDismissFromStartToEnd = false,
+                    enableDismissFromEndToStart = true
+                ) {
+                    BookMarkItem(
+                        modifier = Modifier.animateItem(),
+                        bookMark = bookMark,
+                        index = index,
+                        isLastItem = index == bookMarks.size - 1,
+                        onClick = {
+                            Timber.e("ChosenBookMark navPath ${bookMark.id}/${bookMark.chapter}/${bookMark.verse}")
+                            onNavigate(bookMark.id, bookMark.chapter, bookMark.verse)
+                        }
+                    )
+                }
             }
         }
+    } else {
+        NoBookMarksView()
     }
 }
 
@@ -229,6 +240,26 @@ fun SwipeDeleteBackground(
             contentDescription = "Delete",
             tint = MaterialTheme.colorScheme.surface,
             modifier = Modifier.padding(end = 24.dp)
+        )
+    }
+}
+
+@Composable
+fun NoBookMarksView(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            text = stringResource(R.string.no_book_marks),
+            style = MaterialTheme.typography.headlineLarge,
+            textAlign = TextAlign.Center
         )
     }
 }

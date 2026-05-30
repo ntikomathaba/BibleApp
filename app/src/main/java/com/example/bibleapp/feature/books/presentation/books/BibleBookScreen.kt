@@ -59,9 +59,7 @@ fun BibleBookScreen(
         topBar = {
             BibleBookTopAppBar(
                 title = stringResource(R.string.bible_books),
-                onBackPress = {
-
-                }
+                onBackPress = {}
             )
         },
         modifier = modifier

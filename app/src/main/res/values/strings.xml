@@ -4,4 +4,5 @@
     <string name="chapter">Chapters</string>
     <string name="verses">Verses</string>
     <string name="book_marks">Bookmarks</string>
+    <string name="no_book_marks">You do not have any book marks yet!</string>
 </resources>
