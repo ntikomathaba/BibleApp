@@ -12,6 +12,7 @@ data class BibleBookUiState(
     val chapters: Chapters? = Chapters(),
     val verses: Verses? = Verses(),
 
-    val bookId: String = "",
-    val chapter: Int = 0,
+    val currentBookId: String = "",
+    val currentChapter: Int = 0,
+    val currentVerse: Int = 0
 )
