@@ -13,9 +13,11 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.bibleapp.BottomNavDestination
 import com.example.bibleapp.feature.books.presentation.books.BibleBookScreen
+import com.example.bibleapp.feature.books.presentation.books.WholeChapterScreen
 import com.example.bibleapp.feature.books.presentation.chapters.ChapterScreen
 import com.example.bibleapp.feature.books.presentation.verses.VerseReaderScreen
 import com.example.bibleapp.feature.books.presentation.verses.VerseSelectorScreen
+import timber.log.Timber
 
 fun NavGraphBuilder.bibleBookNavGraph(
     modifier: Modifier = Modifier,
@@ -81,6 +83,16 @@ fun NavGraphBuilder.bibleBookNavGraph(
                 },
                 onBackPress = {
                     navController.navigateUp()
+                },
+                onReadWholeChapter = { chapter ->
+                    navController.navigate(
+                        route = BibleBookDestination
+                            .ChapterScreen
+                            .createRoute(
+                                bookId = bookId,
+                                chapter = chapter
+                            )
+                    )
                 }
             )
         }
@@ -187,6 +199,44 @@ fun NavGraphBuilder.bibleBookNavGraph(
                 }
             )
         }
+
+        composable(
+            route = BibleBookDestination.ChapterScreen.route,
+            arguments = listOf(
+                navArgument("bookId") {
+                    type = NavType.StringType
+                },
+                navArgument("chapter"){
+                    type = NavType.IntType
+                }
+            )
+        ) { backStackEntry ->
+            val bookId = backStackEntry
+                .arguments
+                ?.getString("bookId")
+                ?: ""
+
+            val chapter = backStackEntry
+                .arguments
+                ?.getInt("chapter")
+                ?: 0
+
+            Timber.e("SelectedChapter: $chapter")
+
+            val viewModel: BibleBooksViewModel = hiltViewModel()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            LaunchedEffect(bookId) {
+                viewModel.onEvent(BibleBookEvent.GetChapters(bookId))
+            }
+
+            WholeChapterScreen(
+                bookId = bookId,
+                state = state,
+                event = viewModel::onEvent
+            )
+
+        }
     }
 }
 
@@ -207,6 +257,12 @@ sealed class BibleBookDestination(val route: String) {
     data object VerseScreen : BibleBookDestination("verse_screen/{bookId}/{chapter}/{verse}") {
         fun createRoute(bookId: String, chapter: Int, verse: Int): String {
             return "verse_screen/$bookId/$chapter/$verse"
+        }
+    }
+
+    data object ChapterScreen : BibleBookDestination("book/{bookId}/{chapter}") {
+        fun createRoute(bookId: String, chapter: Int): String {
+            return "book/${bookId}/$chapter"
         }
     }
 }

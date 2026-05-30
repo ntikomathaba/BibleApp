@@ -12,12 +12,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +38,7 @@ fun ChapterScreen(
     state: BibleBookUiState,
     event: (BibleBookEvent) -> Unit,
     onNavigate: (Int) -> Unit,
+    onReadWholeChapter: (Int) -> Unit,
     onBackPress: () -> Unit
 ) {
     val bookId = state.bookId
@@ -65,7 +68,7 @@ fun ChapterScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            if (state.isLoading){
+            if (state.isLoading) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -78,7 +81,8 @@ fun ChapterScreen(
                     modifier = modifier,
                     state = state,
                     event = event,
-                    onNavigate = onNavigate
+                    onNavigate = onNavigate,
+                    onReadWholeBook = { onReadWholeChapter(state.chapter) }
                 )
             }
         }
@@ -90,7 +94,8 @@ private fun ChaptersList(
     modifier: Modifier = Modifier,
     state: BibleBookUiState,
     event: (BibleBookEvent) -> Unit,
-    onNavigate: (Int) -> Unit
+    onNavigate: (Int) -> Unit,
+    onReadWholeBook: () -> Unit
 ) {
     state.chapters?.chapters?.let { chapters ->
         LazyVerticalGrid(
@@ -107,8 +112,28 @@ private fun ChaptersList(
             ) { chapter ->
                 ChapterItem(
                     item = chapter,
-                    onClick = { onNavigate(chapter.chapter) }
+                    onClick = {
+                        event(BibleBookEvent.OnClickChapter(chapter.chapter))
+                        onNavigate(chapter.chapter)
+                    }
                 )
+            }
+
+            item(
+                span = {
+                    GridItemSpan(maxLineSpan)
+                }
+            ) {
+                OutlinedButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    onClick = { onReadWholeBook() }
+                ) {
+                    Text(
+                        text = "Read whole book"
+                    )
+                }
             }
         }
     }
