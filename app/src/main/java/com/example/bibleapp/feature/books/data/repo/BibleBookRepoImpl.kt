@@ -5,7 +5,6 @@ import com.example.bibleapp.feature.bible_search.data.remote.BibleApi
 import com.example.bibleapp.feature.books.data.mapper.toDomain
 import com.example.bibleapp.feature.books.data.mapper.toTestamentBook
 import com.example.bibleapp.feature.books.domain.model.BibleBook
-import com.example.bibleapp.feature.books.domain.model.Books
 import com.example.bibleapp.feature.books.domain.model.Chapters
 import com.example.bibleapp.feature.books.domain.model.Testament
 import com.example.bibleapp.feature.books.domain.model.Verses
