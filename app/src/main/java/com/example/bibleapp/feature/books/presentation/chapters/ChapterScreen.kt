@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +24,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.bibleapp.feature.books.domain.model.Chapter
@@ -65,7 +68,7 @@ fun ChapterScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            if (state.isLoading){
+            if (state.isLoading) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -90,7 +93,7 @@ private fun ChaptersList(
     modifier: Modifier = Modifier,
     state: BibleBookUiState,
     event: (BibleBookEvent) -> Unit,
-    onNavigate: (Int) -> Unit
+    onNavigate: (Int) -> Unit,
 ) {
     state.chapters?.chapters?.let { chapters ->
         LazyVerticalGrid(
@@ -101,13 +104,29 @@ private fun ChaptersList(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            item(
+                span = {
+                    GridItemSpan(maxLineSpan)
+                }
+            ) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Pick a chapter",
+                    style = MaterialTheme.typography.headlineLarge,
+                    textAlign = TextAlign.Center
+                )
+            }
+
             items(
                 items = chapters,
                 key = { it.chapter }
             ) { chapter ->
                 ChapterItem(
                     item = chapter,
-                    onClick = { onNavigate(chapter.chapter) }
+                    onClick = {
+                        event(BibleBookEvent.OnClickChapter(chapter.chapter))
+                        onNavigate(chapter.chapter)
+                    }
                 )
             }
         }
@@ -139,4 +158,15 @@ private fun ChapterItem(
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun ChapterScreenPreview() {
+    ChapterScreen(
+        state = mockBibleBookUiState,
+        event = {},
+        onNavigate = {},
+        onBackPress = {}
+    )
 }

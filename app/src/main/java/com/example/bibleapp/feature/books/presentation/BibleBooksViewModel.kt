@@ -3,8 +3,8 @@ package com.example.bibleapp.feature.books.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bibleapp.core.result.BaseResult
-import com.example.bibleapp.feature.books.domain.use_case.BibleUseCases
 import com.example.bibleapp.feature.bookMarks.domain.use_case.FavouriteVerseUseCases
+import com.example.bibleapp.feature.books.domain.use_case.BibleUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,9 +32,11 @@ class BibleBooksViewModel @Inject constructor(
             is BibleBookEvent.OnClickBook -> onClickBook(event.bookId)
             is BibleBookEvent.GetChapters -> getChapters(event.bookId)
             is BibleBookEvent.GetVerses -> getVerses(event.bookId, event.chapter)
+            is BibleBookEvent.OnClickChapter -> onClickChapter(event.chapter)
             is BibleBookEvent.FavVerse -> favVerse(event.verse)
         }
     }
+
 
     private fun favVerse(verseNum: Int) = viewModelScope.launch {
         val foundVerse = _uiState.value.verses?.verses?.find { it.verse == verseNum }
@@ -125,6 +127,14 @@ class BibleBooksViewModel @Inject constructor(
         _uiState.update { state ->
             state.copy(
                 bookId = bookId
+            )
+        }
+    }
+
+    private fun onClickChapter(chapter: Int) {
+        _uiState.update { state ->
+            state.copy(
+                chapter = chapter
             )
         }
     }

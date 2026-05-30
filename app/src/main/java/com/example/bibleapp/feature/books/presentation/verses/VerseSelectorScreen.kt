@@ -12,22 +12,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.bibleapp.feature.books.domain.model.Verse
 import com.example.bibleapp.feature.books.presentation.BibleBookEvent
 import com.example.bibleapp.feature.books.presentation.BibleBookUiState
+import com.example.bibleapp.feature.books.presentation.chapters.mockBibleBookUiState
 import com.example.bibleapp.feature.books.presentation.components.BookChapterTopAppBar
 
 @Composable
@@ -36,7 +41,8 @@ fun VerseSelectorScreen(
     state: BibleBookUiState,
     event: (BibleBookEvent) -> Unit,
     onNavigate: (Int) -> Unit,
-    onBackPress: () -> Unit
+    onBackPress: () -> Unit,
+    onReadWholeVerse: () -> Unit
 ) {
     val bookId = state.bookId
     val bookName = state.bibleBooks?.books?.find { it.id == bookId }
@@ -80,7 +86,8 @@ fun VerseSelectorScreen(
                 VerseSelectorList(
                     state = state,
                     event = event,
-                    onNavigate = onNavigate
+                    onNavigate = onNavigate,
+                    onReadWholeVerse = onReadWholeVerse
                 )
             }
         }
@@ -95,7 +102,13 @@ fun VerseSelectorList(
     state: BibleBookUiState,
     event: (BibleBookEvent) -> Unit,
     onNavigate: (Int) -> Unit,
+    onReadWholeVerse: () -> Unit
 ) {
+
+    val bookId = state.bookId
+    val bookName = state.bibleBooks?.books?.find { it.id == bookId }?.name
+    val chapter = state.chapter
+
     LazyVerticalGrid(
         modifier = modifier
             .fillMaxSize()
@@ -105,6 +118,19 @@ fun VerseSelectorList(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         state.verses?.verses?.let { verses ->
+            item(
+                span = {
+                    GridItemSpan(maxLineSpan)
+                }
+            ) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Pick a verse",
+                    style = MaterialTheme.typography.headlineLarge,
+                    textAlign = TextAlign.Center
+                )
+            }
+
             items(
                 items = verses,
                 key = { it.verse }
@@ -113,6 +139,23 @@ fun VerseSelectorList(
                     item = verse,
                     onClick = { onNavigate(verse.verse) }
                 )
+            }
+
+            item(
+                span = {
+                    GridItemSpan(maxLineSpan)
+                }
+            ) {
+                OutlinedButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    onClick = { onReadWholeVerse() }
+                ) {
+                    Text(
+                        text = "Read Book of $bookName, Chapter $chapter",
+                    )
+                }
             }
         }
 
@@ -144,4 +187,16 @@ private fun VerseItem(
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun VerseSelectorPreview() {
+    VerseSelectorScreen(
+        state = mockBibleBookUiState,
+        event = {},
+        onNavigate = {},
+        onBackPress = {},
+        onReadWholeVerse = {}
+    )
 }
