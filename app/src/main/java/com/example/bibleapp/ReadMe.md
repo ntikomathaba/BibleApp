@@ -125,6 +125,7 @@ Navigation arguments are used to dynamically load:
 
 * Search functionality
 * Verse sharing
+* Verse of the day
 * Multiple Bible translations
 * Verse highlighting
 * Unit/UI testing
