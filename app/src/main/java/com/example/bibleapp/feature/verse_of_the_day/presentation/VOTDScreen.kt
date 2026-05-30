@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.example.bibleapp.feature.books.presentation.components.VerseReaderTopAppBar
+import com.example.bibleapp.feature.verse_of_the_day.presentation.components.VerseOfTheDayTopAppBar
 
 @Composable
 fun VerseOfTheDayScreen(
@@ -39,16 +39,11 @@ fun VerseOfTheDayScreen(
 
     Scaffold(
         topBar = {
-            VerseReaderTopAppBar(
+            VerseOfTheDayTopAppBar(
                 title = title,
                 onFavVerse = {
-
                     event(VOTDEvent.FavVerse)
-//                    bookMark?.let {
-//                        event(BookMarkEvent.OnDeleteBookMark(bookMark))
-//                    }
-                },
-                onBackPress = {}
+                }
             )
         },
         modifier = modifier
