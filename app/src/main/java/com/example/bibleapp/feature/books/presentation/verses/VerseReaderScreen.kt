@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
@@ -46,7 +48,7 @@ fun VerseReaderScreen(
     onBackPress: () -> Unit,
 ) {
 
-    val title = "$bookId $chapter:$verseNum"
+    val title = "$bookId $chapter:${state.currentVerse}"
 
     LaunchedEffect(
         key1 = bookId,
@@ -60,7 +62,7 @@ fun VerseReaderScreen(
             VerseReaderTopAppBar(
                 title = title,
                 onFavVerse = {
-                    event(BibleBookEvent.FavVerse(verseNum))
+                    event(BibleBookEvent.FavVerse(state.currentVerse))
                 },
                 onBackPress = onBackPress
             )
@@ -81,6 +83,17 @@ fun VerseReaderScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            val bookName = state.bibleBooks?.books?.find { it.id == bookId }?.name
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                text = "$bookName $chapter",
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center
+            )
+
             VerseReaderPager(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
@@ -134,6 +147,10 @@ fun VerseReaderPager(
         ) { pageNum ->
             val currentVerse = verses?.get(pageNum)
 
+            LaunchedEffect(pagerState.currentPage) {
+                event(BibleBookEvent.OnChangeVerse(pagerState.currentPage + 1))
+            }
+
             VersePage(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -177,15 +194,20 @@ fun VersePage(
                 style = MaterialTheme.typography.headlineMedium
             )
 
-            Text(
-                text = indicatorText,
-                style = MaterialTheme.typography.bodySmall
+            Spacer(
+                modifier = Modifier.height(4.dp)
             )
 
             Text(
                 text = "${verse?.text}",
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center
+            )
+
+
+            Text(
+                text = indicatorText,
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }
