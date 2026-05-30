@@ -80,52 +80,6 @@ Users can:
 4. Swipe between verses
 5. Save favourite scriptures
 
----
-
-# Project Structure
-
-The project follows a feature-based Clean Architecture structure.
-
-```text
-feature_bible/
-│
-├── data/
-│   ├── remote/
-│   ├── local/
-│   ├── dto/
-│   ├── mapper/
-│   └── repository/
-│
-├── domain/
-│   ├── model/
-│   ├── repository/
-│   └── usecase/
-│
-└── presentation/
-    ├── books/
-    ├── chapters/
-    ├── verses/
-    ├── bookmarks/
-    └── components/
-```
-
----
-
-# Architectural Decisions
-
-## Clean Architecture
-
-The project separates concerns into:
-
-* Presentation
-* Domain
-* Data
-
-This improves:
-
-* scalability
-* maintainability
-* testability
 
 ---
 
@@ -172,24 +126,15 @@ Navigation arguments are used to dynamically load:
 * Search functionality
 * Verse sharing
 * Multiple Bible translations
-* Dark mode customization
-* Font size preferences
 * Verse highlighting
-* Audio Bible support
 * Unit/UI testing
 * Pagination and caching
 
 ---
 
-# Screenshots
-
-(Add screenshots here if required)
-
----
-
 # How To Run
 
-1. Clone the repository
+1. Clone the repository and checkout master branch
 2. Open in Android Studio
 3. Sync Gradle
 4. Run the app
