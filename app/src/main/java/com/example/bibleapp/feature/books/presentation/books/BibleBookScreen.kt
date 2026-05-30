@@ -1,5 +1,6 @@
 package com.example.bibleapp.feature.books.presentation.books
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,17 +29,22 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.bibleapp.R
 import com.example.bibleapp.feature.books.domain.model.BibleBook
+import com.example.bibleapp.feature.books.domain.model.Testament
 import com.example.bibleapp.feature.books.presentation.BibleBookEvent
 import com.example.bibleapp.feature.books.presentation.BibleBookUiState
 import com.example.bibleapp.feature.books.presentation.components.BibleBookTopAppBar
@@ -98,6 +103,7 @@ fun BibleBookScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun BooksList(
     modifier: Modifier = Modifier,
@@ -105,26 +111,60 @@ private fun BooksList(
     event: (BibleBookEvent) -> Unit,
     onNavigate: (String) -> Unit
 ) {
-    state.bibleBooks?.books?.let { books ->
-        LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-        ) {
-            itemsIndexed(
-                items = books,
-                key = { _, item ->
-                    item.id
-                }
-            ) { index, book ->
-                BookItem(
-                    item = book,
-                    onClick = {
-                        event(BibleBookEvent.OnClickBook(book.id))
-                        onNavigate(book.id)
-                    },
-                    isLastItem = index == books.size - 1,
-                )
+    val oldTestamentBooks = state.bibleBooks.filter {
+        it.testament == Testament.OLD
+    }
+
+    val newTestamentBooks = state.bibleBooks.filter {
+        it.testament == Testament.NEW
+    }
+
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        stickyHeader {
+            TestamentHeader(
+                title = "Old Testament"
+            )
+        }
+
+        itemsIndexed(
+            items = oldTestamentBooks,
+            key = { _, item ->
+                item.id
             }
+        ) { index, book ->
+            BookItem(
+                item = book,
+                onClick = {
+                    event(BibleBookEvent.OnClickBook(book.id))
+                    onNavigate(book.id)
+                },
+                isLastItem = index == oldTestamentBooks.lastIndex
+            )
+        }
+
+        stickyHeader {
+            TestamentHeader(
+                title = "New Testament"
+            )
+        }
+
+        itemsIndexed(
+            items = newTestamentBooks,
+            key = { _, item ->
+                item.id
+            }
+        ) { index, book ->
+            BookItem(
+                item = book,
+                onClick = {
+                    event(BibleBookEvent.OnClickBook(book.id))
+                    onNavigate(book.id)
+                },
+                isLastItem = index == oldTestamentBooks.lastIndex
+            )
         }
     }
 }
@@ -192,5 +232,26 @@ fun BookItem(
     }
     if (!isLastItem) {
         HorizontalDivider()
+    }
+}
+
+@Composable
+fun TestamentHeader(
+    modifier: Modifier = Modifier,
+    title: String
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = title,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primaryContainer)
+                .padding(16.dp)
+        )
     }
 }

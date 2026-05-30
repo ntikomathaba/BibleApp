@@ -4,6 +4,7 @@ import com.example.bibleapp.feature.books.domain.model.BibleBook
 import com.example.bibleapp.feature.books.domain.model.Books
 import com.example.bibleapp.feature.books.domain.model.Chapter
 import com.example.bibleapp.feature.books.domain.model.Chapters
+import com.example.bibleapp.feature.books.domain.model.Testament
 import com.example.bibleapp.feature.books.domain.model.Verse
 import com.example.bibleapp.feature.books.domain.model.Verses
 import com.example.bibleapp.feature.books.presentation.BibleBookUiState
@@ -11,16 +12,15 @@ import com.example.bibleapp.feature.books.presentation.BibleBookUiState
 val mockBibleBookUiState = BibleBookUiState(
     isLoading = false,
     isError = false,
-    bibleBooks = Books(
+    bibleBooks =
         listOf(
-            BibleBook("GEN", "Genesis", "www.bible-api.com/GEN"),
-            BibleBook("NUM", "Numbers", "www.bible-api.com/JHN"),
-            BibleBook("JHN", "John", "www.bible-api.com/JHN"),
-            BibleBook("MRK", "Mark", "www.bible-api.com/MRK"),
-            BibleBook("LUK", "Luke", "www.bible-api.com/LUK"),
-            BibleBook("MAT", "Matthew", "www.bible-api.com/MAT"),
-        )
-    ),
+            BibleBook("GEN", "Genesis", "www.bible-api.com/GEN", testament = Testament.OLD),
+            BibleBook("NUM", "Numbers", "www.bible-api.com/NUM", testament = Testament.OLD),
+            BibleBook("JHN", "John", "www.bible-api.com/JHN", testament = Testament.NEW),
+            BibleBook("MRK", "Mark", "www.bible-api.com/MRK", testament = Testament.NEW),
+            BibleBook("LUK", "Luke", "www.bible-api.com/LUK", testament = Testament.NEW),
+            BibleBook("MAT", "Matthew", "www.bible-api.com/MAT", testament = Testament.NEW),
+        ),
     chapters = Chapters(
         listOf(
             Chapter("GEN", "Genesis", 1, "www.bible-api.com/GEN/1"),

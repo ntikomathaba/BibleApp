@@ -3,8 +3,11 @@ package com.example.bibleapp.feature.books.data.repo
 import com.example.bibleapp.core.result.BaseResult
 import com.example.bibleapp.feature.bible_search.data.remote.BibleApi
 import com.example.bibleapp.feature.books.data.mapper.toDomain
+import com.example.bibleapp.feature.books.data.mapper.toTestamentBook
+import com.example.bibleapp.feature.books.domain.model.BibleBook
 import com.example.bibleapp.feature.books.domain.model.Books
 import com.example.bibleapp.feature.books.domain.model.Chapters
+import com.example.bibleapp.feature.books.domain.model.Testament
 import com.example.bibleapp.feature.books.domain.model.Verses
 import com.example.bibleapp.feature.books.domain.repo.BibleBookRepo
 import javax.inject.Inject
@@ -12,13 +15,20 @@ import javax.inject.Inject
 class BibleBookRepoImpl @Inject constructor(
     private val bibleBooksApi: BibleApi
 ) : BibleBookRepo {
-    override suspend fun getBibleBooks(): BaseResult<Books?, Error> {
+    override suspend fun getBibleBooks(): BaseResult<List<BibleBook>, Error> {
         val result = bibleBooksApi.getBooks()
 
         if (result.isSuccessful) {
             val body = result.body()
             return if (body != null) {
-                BaseResult.Success(result.body()?.books?.toDomain())
+                val testamentBook = body.books.mapIndexed { index, dto ->
+                    if (index < 39) {
+                        dto.toTestamentBook(Testament.OLD)
+                    } else {
+                        dto.toTestamentBook(Testament.NEW)
+                    }
+                }
+                BaseResult.Success(data = testamentBook)
             } else {
                 BaseResult.Failure(Error("API Error ${result.code()}: ${result.message()}"))
             }

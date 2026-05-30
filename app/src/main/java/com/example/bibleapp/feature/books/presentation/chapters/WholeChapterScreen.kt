@@ -40,7 +40,7 @@ fun WholeChapterScreen(
     onBackPress: () -> Unit
 ) {
     val bookId = state.currentBookId
-    val bookName = state.bibleBooks?.books?.find { it.id == bookId }
+    val bookName = state.bibleBooks.find { it.id == bookId }
 
     val chapter = state.currentChapter
     val title = "${bookName?.name}: $chapter"
