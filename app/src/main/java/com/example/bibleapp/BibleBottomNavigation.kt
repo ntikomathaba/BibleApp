@@ -1,11 +1,13 @@
 package com.example.bibleapp
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -18,6 +20,7 @@ fun BibleBottomNavigation(
     val bottomNavItems = listOf(
         BottomNavDestination.Bible,
         BottomNavDestination.BookMark,
+        BottomNavDestination.VerseOfTheDay,
         BottomNavDestination.Settings
     )
 
@@ -28,10 +31,9 @@ fun BibleBottomNavigation(
                 ?.destination
 
         bottomNavItems.forEach { item ->
-            val isSelected =
-                currentDestination?.hierarchy?.any {
-                    it.route == item.route
-                } == true
+            val isSelected = currentDestination?.hierarchy?.any {
+                it.route == item.route
+            } == true
 
             NavigationBarItem(
                 selected = isSelected,
@@ -47,11 +49,15 @@ fun BibleBottomNavigation(
                 icon = {
                     Icon(
                         imageVector = item.icon,
-                        contentDescription = "Icon"
+                        contentDescription = item.title
                     )
                 },
                 label = {
-                    Text(item.title)
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = item.title,
+                        textAlign = TextAlign.Center
+                    )
                 }
             )
         }

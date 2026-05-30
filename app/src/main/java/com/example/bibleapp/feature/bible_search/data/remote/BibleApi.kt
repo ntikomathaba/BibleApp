@@ -4,6 +4,7 @@ import com.example.bibleapp.feature.bible_search.data.remote.dto.BibleVerseRespo
 import com.example.bibleapp.feature.books.data.remote.dto.BibleBooksResponseDto
 import com.example.bibleapp.feature.books.data.remote.dto.BookChaptersResponseDto
 import com.example.bibleapp.feature.books.data.remote.dto.VersesResponseDto
+import com.example.bibleapp.feature.verse_of_the_day.data.remote.dto.VerseOfTheDayResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -31,5 +32,10 @@ interface BibleApi {
         @Path("bookId") bookId: String,
         @Path("chapter") chapter: Int
     ): Response<VersesResponseDto>
+
+    @GET("data/{translation}/random")
+    suspend fun getRandomVerse(
+        @Path("translation") translation: String = "web",
+    ): Response<VerseOfTheDayResponseDto>
 
 }

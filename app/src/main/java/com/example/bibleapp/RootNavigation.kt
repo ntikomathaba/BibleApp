@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.CalendarViewDay
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ import com.example.bibleapp.feature.bible_search.presentation.bibleSearchNavGrap
 import com.example.bibleapp.feature.bookMarks.bookMarksNavGraph
 import com.example.bibleapp.feature.books.presentation.bibleBookNavGraph
 import com.example.bibleapp.feature.settings.settingsNavGraph
+import com.example.bibleapp.feature.verse_of_the_day.presentation.verseOfTheDayNavGraph
 
 @Composable
 fun RootNavigation(modifier: Modifier = Modifier) {
@@ -60,6 +62,11 @@ fun RootNavigation(modifier: Modifier = Modifier) {
                 modifier = modifier.padding(contentPadding)
             )
 
+            verseOfTheDayNavGraph(
+                navController = navController,
+                modifier = modifier
+            )
+
             settingsNavGraph(
                 navController = navController,
                 modifier = modifier
@@ -84,11 +91,19 @@ sealed class BottomNavDestination(
             title = "Bible",
             icon = Icons.AutoMirrored.Filled.MenuBook
         )
+
     data object BookMark : BottomNavDestination(
             route = "saved",
-            title = "Saved",
+            title = "Book Marks",
             icon = Icons.Default.Bookmark
         )
+
+    data object VerseOfTheDay : BottomNavDestination(
+        route = "verse_of_the_day",
+        title = "Verse of The Day",
+        icon = Icons.Default.CalendarViewDay
+    )
+
     data object Settings : BottomNavDestination(
             route = "settings",
             title = "Settings",
