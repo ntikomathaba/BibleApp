@@ -4,6 +4,8 @@ import com.example.bibleapp.feature.bible_search.data.repo.BibleRepoImpl
 import com.example.bibleapp.feature.bible_search.domain.repo.BibleRepo
 import com.example.bibleapp.feature.books.data.repo.BibleBookRepoImpl
 import com.example.bibleapp.feature.books.domain.repo.BibleBookRepo
+import com.example.bibleapp.feature.verse_of_the_day.data.repo.VerseOfTheDayImpl
+import com.example.bibleapp.feature.verse_of_the_day.domain.repo.VerseOfTheDayRepo
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -22,8 +24,8 @@ abstract class RepositoryModule {
         impl: BibleBookRepoImpl
     ): BibleBookRepo
 
-//    @Binds
-//    abstract fun bindFavouriteVerseRepo(
-//        impl: FavouriteVerseRepoImpl
-//    ): FavouriteVerseRepo
+    @Binds
+    abstract fun bindFVerseOfTheDayRepo(
+        impl: VerseOfTheDayImpl
+    ): VerseOfTheDayRepo
 }
