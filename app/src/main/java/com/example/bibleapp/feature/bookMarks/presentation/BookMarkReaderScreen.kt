@@ -40,6 +40,7 @@ fun BookMarkReaderScreen(
                     bookMark?.let {
                         event(BookMarkEvent.OnDeleteBookMark(bookMark))
                     }
+                    onBackPress()
                 },
                 onBackPress = onBackPress
             )

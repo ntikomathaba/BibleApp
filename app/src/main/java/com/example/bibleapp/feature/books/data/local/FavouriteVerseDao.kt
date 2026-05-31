@@ -19,6 +19,18 @@ interface FavouriteVerseDao {
     fun getAlVerses(): Flow<List<FavouriteVerseEntity>>
 
 
+    @Query("""
+    DELETE FROM favourite_verses
+    WHERE bookId = :bookId
+    AND chapter = :chapter
+    AND verse = :verse
+""")
+    suspend fun deleteVerse(
+        bookId: String,
+        chapter: Int,
+        verse: Int
+    )
+
     @Delete
     suspend fun delete(entity: FavouriteVerseEntity)
 }
