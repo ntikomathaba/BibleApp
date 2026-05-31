@@ -14,15 +14,18 @@ fun NavGraphBuilder.bibleSearchNavGraph(
 ) {
     navigation(
         startDestination = BibleDestination.Home.route,
-        route = Destination.BibleNavGraph.route
+        route = Destination.BibleSearchNavGraph.route
     ){
         composable(BibleDestination.Home.route){
-            val viewModel: BibleViewModel = hiltViewModel()
+            val viewModel: BibleSearchViewModel = hiltViewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
 
-            BibleScreen(
+            BibleSearchScreen(
                 state = state,
-                event = viewModel::onEvent
+                event = viewModel::onEvent,
+                onBackPress = {
+                    navController.navigateUp()
+                }
             )
         }
     }

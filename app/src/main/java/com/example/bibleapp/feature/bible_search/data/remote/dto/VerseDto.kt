@@ -3,6 +3,7 @@ package com.example.bibleapp.feature.bible_search.data.remote.dto
 import com.google.gson.annotations.SerializedName
 
 data class VerseDto(
+    @SerializedName("book_id")
     val bookId: String,
     @SerializedName("book_name")
     val bookName: String,

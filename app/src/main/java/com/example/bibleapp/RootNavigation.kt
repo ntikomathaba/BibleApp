@@ -54,7 +54,18 @@ fun RootNavigation(modifier: Modifier = Modifier) {
 
             bibleBookNavGraph(
                 navController = navController,
-                modifier = modifier.padding(contentPadding)
+                modifier = modifier.padding(contentPadding),
+                onSearchClicked = {
+                    navController.navigate(
+                        route = Destination
+                            .BibleSearchNavGraph
+                            .route
+                    ) {
+                        popUpTo(Destination.BibleNavGraph.route) {
+                            inclusive = true
+                        }
+                    }
+                }
             )
 
             bookMarksNavGraph(
@@ -79,6 +90,7 @@ fun RootNavigation(modifier: Modifier = Modifier) {
 
 sealed class Destination(val route: String) {
     data object BibleNavGraph : Destination("bible_nav_graph")
+    data object BibleSearchNavGraph : Destination("search_nav_graph")
 }
 
 sealed class BottomNavDestination(
@@ -87,16 +99,16 @@ sealed class BottomNavDestination(
     val icon: ImageVector
 ) {
     data object Bible : BottomNavDestination(
-            route = "bible",
-            title = "Bible",
-            icon = Icons.AutoMirrored.Filled.MenuBook
-        )
+        route = "bible",
+        title = "Bible",
+        icon = Icons.AutoMirrored.Filled.MenuBook
+    )
 
     data object BookMark : BottomNavDestination(
-            route = "saved",
-            title = "Book Marks",
-            icon = Icons.Default.Bookmark
-        )
+        route = "saved",
+        title = "Book Marks",
+        icon = Icons.Default.Bookmark
+    )
 
     data object VerseOfTheDay : BottomNavDestination(
         route = "verse_of_the_day",
@@ -105,8 +117,8 @@ sealed class BottomNavDestination(
     )
 
     data object Settings : BottomNavDestination(
-            route = "settings",
-            title = "Settings",
-            icon = Icons.Default.Settings
-        )
+        route = "settings",
+        title = "Settings",
+        icon = Icons.Default.Settings
+    )
 }
