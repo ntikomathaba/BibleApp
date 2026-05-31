@@ -1,5 +1,9 @@
 package com.example.bibleapp.feature.bookMarks.presentation
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,6 +38,11 @@ import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,6 +56,7 @@ import androidx.compose.ui.unit.dp
 import com.example.bibleapp.R
 import com.example.bibleapp.feature.bookMarks.presentation.components.BookMarksTopAppBar
 import com.example.bibleapp.feature.books.domain.model.Verse
+import kotlinx.coroutines.delay
 import timber.log.Timber
 
 @Composable
@@ -104,11 +114,15 @@ fun BookMarksList(
                     "${verse.id}_${verse.chapter}_${verse.verse}"
                 }
             ) { index, bookMark ->
+
+                var isRemoved by remember {
+                    mutableStateOf(false)
+                }
+
                 val dismissState = rememberSwipeToDismissBoxState(
                     confirmValueChange = { value ->
                         if (value == SwipeToDismissBoxValue.EndToStart) {
-                            event(BookMarkEvent.OnDeleteBookMark(bookMark))
-
+                            isRemoved = true
                             true
                         } else {
                             false
@@ -117,22 +131,34 @@ fun BookMarksList(
                     positionalThreshold = { it * 0.7f }
                 )
 
-                SwipeToDismissBox(
-                    state = dismissState,
-                    backgroundContent = { SwipeDeleteBackground(dismissState) },
-                    enableDismissFromStartToEnd = false,
-                    enableDismissFromEndToStart = true
-                ) {
-                    BookMarkItem(
-                        modifier = Modifier.animateItem(),
-                        bookMark = bookMark,
-                        index = index,
-                        isLastItem = index == bookMarks.size - 1,
-                        onClick = {
-                            Timber.e("ChosenBookMark navPath ${bookMark.id}/${bookMark.chapter}/${bookMark.verse}")
-                            onNavigate(bookMark.id, bookMark.chapter, bookMark.verse)
-                        }
-                    )
+                LaunchedEffect(isRemoved) {
+                    if (isRemoved) {
+                        delay(500)
+                        event(BookMarkEvent.OnDeleteBookMark(bookMark))
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = !isRemoved,
+                    exit = shrinkVertically() + fadeOut()
+                ){
+                    SwipeToDismissBox(
+                        state = dismissState,
+                        backgroundContent = { SwipeDeleteBackground(dismissState) },
+                        enableDismissFromStartToEnd = false,
+                        enableDismissFromEndToStart = true
+                    ) {
+                        BookMarkItem(
+                            modifier = Modifier.animateItem(),
+                            bookMark = bookMark,
+                            index = index,
+                            isLastItem = index == bookMarks.size - 1,
+                            onClick = {
+                                Timber.e("ChosenBookMark navPath ${bookMark.id}/${bookMark.chapter}/${bookMark.verse}")
+                                onNavigate(bookMark.id, bookMark.chapter, bookMark.verse)
+                            }
+                        )
+                    }
                 }
             }
         }
