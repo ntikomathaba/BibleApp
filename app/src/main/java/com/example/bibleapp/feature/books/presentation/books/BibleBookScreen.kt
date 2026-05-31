@@ -52,7 +52,8 @@ fun BibleBookScreen(
     modifier: Modifier = Modifier,
     state: BibleBookUiState,
     event: (BibleBookEvent) -> Unit,
-    onNavigate: (String) -> Unit
+    onNavigate: (String) -> Unit,
+    onSearchClicked: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         event(BibleBookEvent.FetchBibleBooks)
@@ -62,7 +63,8 @@ fun BibleBookScreen(
         topBar = {
             BibleBookTopAppBar(
                 title = stringResource(R.string.bible_books),
-                onBackPress = {}
+                onBackPress = {},
+                onSearchClicked = onSearchClicked
             )
         },
         modifier = modifier

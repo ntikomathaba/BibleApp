@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -17,13 +18,19 @@ import androidx.compose.ui.Modifier
 fun BibleBookTopAppBar(
     modifier: Modifier = Modifier,
     title: String,
-    onBackPress: () -> Unit
+    onSearchClicked: () -> Unit,
+    onBackPress: () -> Unit,
 ) {
     TopAppBar(
         title = {
             Text(
                 text = title
             )
+        },
+        actions = {
+            IconButton(onClick = onSearchClicked) {
+                Icon(Icons.Default.Search, contentDescription = "Search")
+            }
         }
     )
 }
@@ -57,7 +64,7 @@ fun BookChapterTopAppBar(
 fun VerseReaderTopAppBar(
     modifier: Modifier = Modifier,
     title: String,
-    onFavVerse:() -> Unit,
+    onFavVerse: () -> Unit,
     onBackPress: () -> Unit
 ) {
     TopAppBar(

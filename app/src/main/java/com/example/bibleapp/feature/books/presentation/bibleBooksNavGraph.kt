@@ -22,6 +22,7 @@ import timber.log.Timber
 fun NavGraphBuilder.bibleBookNavGraph(
     modifier: Modifier = Modifier,
     navController: NavController,
+    onSearchClicked: () -> Unit
 ) {
     navigation(
         route = BottomNavDestination.Bible.route,
@@ -42,7 +43,8 @@ fun NavGraphBuilder.bibleBookNavGraph(
                             .ChapterListScreen
                             .createRoute(bookId)
                     )
-                }
+                },
+                onSearchClicked = onSearchClicked
             )
         }
 
